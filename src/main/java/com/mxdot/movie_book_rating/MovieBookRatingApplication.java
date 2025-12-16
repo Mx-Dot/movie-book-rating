@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MovieBookRatingApplication {
 
     public static void main(final String[] args) {
+
         SpringApplication.run(MovieBookRatingApplication.class, args);
     }
 

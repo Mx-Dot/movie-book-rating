@@ -1,1 +1,11 @@
-services: {}
+services:
+  mysql:
+    image: mysql:latest
+    container_name: spring-security-step-by-step-mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: security_users
+    ports:
+      - '3306:3306'
+    volumes:
+      - /var/lib/mysql
