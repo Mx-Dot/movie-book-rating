@@ -55,6 +55,6 @@ processResources {
     dependsOn npmRunBuild
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
     useJUnitPlatform()
 }

@@ -11,5 +11,19 @@
       "headline": "Error",
       "message": "The page you are looking for is not available right now."
     }
+  },
+  "login": {
+    "title": "Login",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Login"
+  },
+  "movie_ratings": {
+    "title": "Movies",
+    "rating": "Rating"
+  },
+  "tv_shows_ratings": {
+    "title": "TV Shows",
+    "rating": "Rating"
   }
 }

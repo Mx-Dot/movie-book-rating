@@ -9,5 +9,5 @@ test('should create', () => {
 
 test('should render title', () => {
   const { container } = renderWithRouter(<Home />);
-  expect(container.querySelector('h1')).toHaveTextContent('home.index.headline');
+  expect(container.querySelector('h1')).toHaveTextContent('nowadays');
 });

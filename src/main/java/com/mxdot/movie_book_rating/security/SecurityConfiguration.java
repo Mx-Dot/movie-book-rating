@@ -19,11 +19,28 @@ import java.util.List;
 @Configuration
 public class SecurityConfiguration {
 
+    /**
+     * Defines a {@link PasswordEncoder} bean for encoding and verifying passwords.
+     * Uses {@link BCryptPasswordEncoder}, which provides a strong hashing algorithm
+     * suitable for secure password storage.
+     *
+     * @return a {@link PasswordEncoder} instance for encoding and validating passwords.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Configures the security filter chain for the application.
+     * The configuration includes session management with stateless sessions, request authorization
+     * for specific endpoints, and disabling CSRF protection. Additionally, it configures CORS
+     * settings using a dedicated CORS configuration source.
+     *
+     * @param security an instance of {@link HttpSecurity} used to build the security filter chain.
+     * @return a {@link SecurityFilterChain} object that defines the security rules and filters for the application.
+     * @throws Exception if an error occurs during the configuration process.
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity security) throws Exception {
         return security.sessionManagement(session -> {
@@ -37,6 +54,13 @@ public class SecurityConfiguration {
                 .build();
     }
 
+    /**
+     * Configures a {@link CorsConfigurationSource} to define settings for Cross-Origin Resource Sharing (CORS).
+     * The configuration includes allowed origins, methods, headers, and exposed headers,
+     * as well as enabling credentials and setting the maximum age for CORS requests.
+     *
+     * @return a {@link CorsConfigurationSource} instance containing the CORS configuration details.
+     */
     private CorsConfigurationSource corsConfig() {
         return new CorsConfigurationSource() {
             @Override
