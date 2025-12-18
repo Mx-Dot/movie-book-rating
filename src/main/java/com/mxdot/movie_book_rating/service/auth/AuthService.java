@@ -9,7 +9,7 @@ public interface AuthService {
 
     LoginResponse login(String username, String password);
 
-    RegistrationResponse register(String username, String password);
+    RegistrationResponse register(String email, String username, String password);
 
     LogoutResponse logout(HttpServletRequest request);
 

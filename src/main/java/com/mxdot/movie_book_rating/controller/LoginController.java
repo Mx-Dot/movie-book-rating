@@ -17,7 +17,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest loginRequest) {
-        return authService.login(loginRequest.getEmail(), loginRequest.getPassword());
+        return authService.login(loginRequest.getLoginId(), loginRequest.getPassword());
     }
 
     @PostMapping("/logout")
@@ -27,7 +27,7 @@ public class LoginController {
 
     @PostMapping("/register")
     public RegistrationResponse register(@RequestBody RegisterRequest registerRequest) {
-        return authService.register(registerRequest.getUsername(), registerRequest.getPassword());
+        return authService.register(registerRequest.getEmail(), registerRequest.getUsername(), registerRequest.getPassword());
     }
 
     @PostMapping("/refresh")

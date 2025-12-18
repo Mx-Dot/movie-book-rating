@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "LOGIN_USER")
 @Data
@@ -21,8 +23,12 @@ public class User {
     private Long id;
 
     @Column(unique = true)
+    private String email;
+    @Column(unique = true)
     private String username;
     @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
+    private Date memberSince = new Date();
 
 }

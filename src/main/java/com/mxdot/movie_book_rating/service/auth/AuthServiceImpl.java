@@ -29,25 +29,28 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public LoginResponse login(String username, String password) {
-        final User user = userRepository.findByUsername(username).isPresent() ? userRepository.findByUsername(username).get() : null;
+    public LoginResponse login(String loginId, String password) {
+        final User user = userRepository.findByUsername(loginId)
+                .or(() -> userRepository.findByEmail(loginId))
+                .orElse(null);
 
         if (user == null) return new LoginResponse(false, "Login failed", null, null);
 
         if (passwordEncoder.matches(password, user.getPassword())) {
-            final String auth = jwtUtility.generateToken(username);
+            final String auth = jwtUtility.generateToken(loginId);
             return new LoginResponse(true, "Login successful", user.getUsername(), auth);
         }
         return new LoginResponse(false, "Login failed", null, null);
     }
 
     @Override
-    public RegistrationResponse register(String username, String password) {
+    public RegistrationResponse register(String email, String username, String password) {
         final User user = new User();
+        user.setEmail(email);
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
-        return new RegistrationResponse(true, "Registration successful", username);
+        return new RegistrationResponse(true, email, username, "Registration successful");
     }
 
     @Override
