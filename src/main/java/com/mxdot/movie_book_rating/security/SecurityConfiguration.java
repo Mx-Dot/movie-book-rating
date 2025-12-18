@@ -33,7 +33,7 @@ public class SecurityConfiguration {
 
     /**
      * Configures the security filter chain for the application.
-     * The configuration includes session management with stateless sessions, request authorization
+     * The configuration includes session management with stateless sessions, requesting authorization
      * for specific endpoints, and disabling CSRF protection. Additionally, it configures CORS
      * settings using a dedicated CORS configuration source.
      *
@@ -47,9 +47,11 @@ public class SecurityConfiguration {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers(("/api/**")).authenticated().anyRequest().permitAll();
-
-                }).csrf(AbstractHttpConfigurer::disable)
+                    auth.requestMatchers("/api/auth/**").permitAll()
+                            .requestMatchers("/api/**").authenticated()
+                            .anyRequest().permitAll();
+                })
+                .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfig()))
                 .build();
     }

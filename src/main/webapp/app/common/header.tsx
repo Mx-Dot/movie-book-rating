@@ -1,15 +1,44 @@
 import React, {useEffect, useRef} from 'react';
-import {Link} from 'react-router';
+import {Link, useNavigate} from 'react-router';
 import {useTranslation} from 'react-i18next';
+import axios from "axios";
 
 
 export default function Header() {
     const {t} = useTranslation();
     const headerRef = useRef<HTMLElement | null>(null);
+    const [isLoggedIn, setIsLoggedIn] = React.useState(localStorage.getItem('token'))
+    const API_URL = process.env.API_PATH;
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+            const token = localStorage.getItem('token');
+
+            await axios.post(`${API_URL}/api/auth/logout`, {}, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            localStorage.removeItem('token');
+            window.dispatchEvent(new Event('storage'));
+            navigate('/');
+        } catch (error) {
+            console.error(error);
+            localStorage.removeItem('token');
+            window.dispatchEvent(new Event('storage'));
+            navigate('/');
+        }
+    }
 
     useEffect(() => {
         const currentHeader = headerRef.current;
         if (!currentHeader) return;
+
+        const handleStorageChange = () => {
+            setIsLoggedIn(localStorage.getItem('token'))
+        };
+        window.addEventListener('storage', handleStorageChange);
 
         const handleClick = (event: MouseEvent) => {
             const target = event.target as HTMLElement | null;
@@ -33,7 +62,10 @@ export default function Header() {
         };
 
         currentHeader.addEventListener('click', handleClick);
-        return () => currentHeader.removeEventListener('click', handleClick);
+        return () => {
+            currentHeader.removeEventListener('click', handleClick);
+            currentHeader.removeEventListener('storage', handleStorageChange);
+        }
     }, []);
 
     return (
@@ -149,13 +181,25 @@ export default function Header() {
                                     </ul>
                                 </div>
                             </li>
-
                             <li>
-                                <Link
-                                    to="/login"
-                                    className="block text-gray-500 px-3 py-2 rounded-md hover:bg-gray-100 hover:text-gray-700 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-                                    {t('login.title')}
-                                </Link>
+                                {isLoggedIn ? (
+                                    <Link to="/account" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">
+                                        {t('account.title', 'My Account')}
+                                    </Link>
+                                ) : (
+                                    <Link to="/login" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">
+                                        {t('login.title', 'Login')}
+                                    </Link>
+                                )}
+                            </li>
+                            <li>
+                                {isLoggedIn ? (
+                                    <button
+                                        onClick={handleLogout}
+                                        className="block text-gray-500 px-3 py-2 rounded-md hover:bg-gray-100">
+                                        Logout
+                                    </button>
+                                ) : null}
                             </li>
                         </ul>
                     </div>
