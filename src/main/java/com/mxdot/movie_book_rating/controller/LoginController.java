@@ -1,17 +1,9 @@
 package com.mxdot.movie_book_rating.controller;
 
-import com.mxdot.movie_book_rating.dto.LoginRequest;
-import com.mxdot.movie_book_rating.dto.LoginResponse;
-import com.mxdot.movie_book_rating.dto.RegisterRequest;
+import com.mxdot.movie_book_rating.dto.*;
 import com.mxdot.movie_book_rating.service.auth.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -29,15 +21,17 @@ public class LoginController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<LoginResponse> logout(HttpServletRequest request) {
-        final String auth = request.getHeader("Authorization");
-        final LoginResponse response = new LoginResponse(true, "Logout successful", null, null);
-        SecurityContextHolder.clearContext();
-        return ResponseEntity.ok(response);
+    public LogoutResponse logout(HttpServletRequest request) {
+        return authService.logout(request);
     }
 
     @PostMapping("/register")
-    public LoginResponse register(@RequestBody RegisterRequest registerRequest) {
+    public RegistrationResponse register(@RequestBody RegisterRequest registerRequest) {
         return authService.register(registerRequest.getUsername(), registerRequest.getPassword());
+    }
+
+    @PostMapping("/refresh")
+    public LoginResponse refresh(@CookieValue String refreshToken) {
+        return authService.attemptRefresh(refreshToken);
     }
 }
