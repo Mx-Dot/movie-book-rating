@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -28,7 +30,11 @@ public class User {
     private String username;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false)
-    private Date memberSince = new Date();
+    @Column(name = "member_since", nullable = false)
+    private LocalDateTime memberSince;
 
+    @PrePersist
+    protected void onCreate() {
+        if(this.memberSince == null) this.memberSince = LocalDateTime.now();
+    }
 }

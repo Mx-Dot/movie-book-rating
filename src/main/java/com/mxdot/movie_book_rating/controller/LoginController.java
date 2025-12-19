@@ -3,6 +3,7 @@ package com.mxdot.movie_book_rating.controller;
 import com.mxdot.movie_book_rating.dto.*;
 import com.mxdot.movie_book_rating.service.auth.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,8 +22,8 @@ public class LoginController {
     }
 
     @PostMapping("/logout")
-    public LogoutResponse logout(HttpServletRequest request) {
-        return authService.logout(request);
+    public LogoutResponse logout(HttpServletRequest request, HttpServletResponse response) {
+        return authService.logout(request, response);
     }
 
     @PostMapping("/register")

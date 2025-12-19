@@ -4,6 +4,7 @@ import com.mxdot.movie_book_rating.dto.LoginResponse;
 import com.mxdot.movie_book_rating.dto.LogoutResponse;
 import com.mxdot.movie_book_rating.dto.RegistrationResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface AuthService {
 
@@ -11,7 +12,7 @@ public interface AuthService {
 
     RegistrationResponse register(String email, String username, String password);
 
-    LogoutResponse logout(HttpServletRequest request);
+    LogoutResponse logout(HttpServletRequest request, HttpServletResponse response);
 
     LoginResponse attemptRefresh(String refreshToken);
 }
