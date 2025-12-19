@@ -1,14 +1,13 @@
 package com.mxdot.movie_book_rating.service.auth;
 
 import com.mxdot.movie_book_rating.data.model.User;
-import com.mxdot.movie_book_rating.dto.LoginResponse;
-import com.mxdot.movie_book_rating.dto.LogoutResponse;
-import com.mxdot.movie_book_rating.dto.RegistrationResponse;
+import com.mxdot.movie_book_rating.dto.user.LoginResponse;
+import com.mxdot.movie_book_rating.dto.user.LogoutResponse;
+import com.mxdot.movie_book_rating.dto.user.RegistrationResponse;
 import com.mxdot.movie_book_rating.repository.user.UserRepository;
 import com.mxdot.movie_book_rating.security.JWTUtility;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,7 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 
-@Slf4j
+import java.time.LocalDateTime;
+
 @Service
 public class AuthServiceImpl implements AuthService {
 
@@ -52,6 +52,7 @@ public class AuthServiceImpl implements AuthService {
         user.setEmail(email);
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
+        user.setMemberSince(LocalDateTime.now());
         userRepository.save(user);
         return new RegistrationResponse(true, email, username, "Registration successful");
     }

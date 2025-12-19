@@ -32,9 +32,4 @@ public class User {
     private String password;
     @Column(name = "member_since", nullable = false)
     private LocalDateTime memberSince;
-
-    @PrePersist
-    protected void onCreate() {
-        if(this.memberSince == null) this.memberSince = LocalDateTime.now();
-    }
 }
